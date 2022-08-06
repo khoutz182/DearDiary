@@ -1,9 +1,7 @@
 use crate::commands::{DiaryCommand, EditMode};
 use crate::config::DDConfig;
 use chrono::prelude::*;
-use std::env;
-use std::fs;
-use std::io;
+use std::{env, io, fs};
 use std::io::Write;
 use std::process::Command;
 use std::str;
@@ -20,6 +18,9 @@ fn main() -> Result<(), io::Error> {
     let cmd = commands::args();
     let cfg: config::DDConfig = confy::load("dear-diary")?;
     let context = Context { config: cfg };
+
+    // Create diary directory if it doesn't exist
+    fs::create_dir_all(context.config.expanded_diary_directory())?;
 
     match cmd {
         DiaryCommand::Scan => scan(),
@@ -95,7 +96,7 @@ fn create(context: &Context) {
 
     let diary_fullpath = format!(
         "{}{}{}{}{}-{}.md",
-        context.config.diary_directory, path_sep, date_path, path_sep, uuid, title
+        context.config.expanded_diary_directory(), path_sep, date_path, path_sep, uuid, title
     );
 
     let output = Command::new(edit_cmd)
