@@ -1,0 +1,13 @@
+[package]
+name = "dear_diary"
+version = "0.1.0"
+authors = ["khoutz <khoutz182+gh@pm.me>"]
+edition = "2018"
+
+[dependencies]
+structopt = { version = "0.3" }
+confy = { version = "0.3.1" }
+serde = { version = "1.0", features = ["derive"] }
+chrono = "0.4"
+uuid = {version = "0.4", features = ["v4"] }
+shellexpand = { version = "2.1.0" }
